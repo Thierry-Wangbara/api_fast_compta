@@ -1,4 +1,3 @@
-// src/pages/api-docs/Documentation.tsx
 import { useState } from 'react'
 import { endpointsBySection } from './documentation/data'
 import SectionBlock from './documentation/ui/SectionBlock'
@@ -7,6 +6,9 @@ export default function Documentation() {
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
   const [expandedEndpoint, setExpandedEndpoint] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<Record<string, string>>({})
+
+  // Debug: vérifier que les données sont chargées
+  console.log('endpointsBySection:', endpointsBySection)
 
   return (
     <div
@@ -59,22 +61,34 @@ export default function Documentation() {
 
       {/* Content */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
-        {Object.entries(endpointsBySection).map(([section, sectionEndpoints]) => (
-          <SectionBlock
-            key={section}
-            section={section}
-            endpoints={sectionEndpoints}
-            expandedSection={expandedSection}
-            setExpandedSection={(v) => {
-              setExpandedSection(v)
-              setExpandedEndpoint(null) // reset endpoint quand on change de section
-            }}
-            expandedEndpoint={expandedEndpoint}
-            setExpandedEndpoint={setExpandedEndpoint}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-        ))}
+        {endpointsBySection && Object.keys(endpointsBySection).length > 0 ? (
+          Object.entries(endpointsBySection).map(([section, sectionEndpoints]) => (
+            <SectionBlock
+              key={section}
+              section={section}
+              endpoints={sectionEndpoints}
+              expandedSection={expandedSection}
+              setExpandedSection={(v: string | null) => {
+                setExpandedSection(v)
+                setExpandedEndpoint(null) // reset endpoint quand on change de section
+              }}
+              expandedEndpoint={expandedEndpoint}
+              setExpandedEndpoint={setExpandedEndpoint}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          ))
+        ) : (
+          <div style={{ 
+            padding: '2rem', 
+            textAlign: 'center', 
+            color: '#666',
+            background: 'white',
+            borderRadius: '8px'
+          }}>
+            <p>Chargement de la documentation...</p>
+          </div>
+        )}
       </div>
     </div>
   )

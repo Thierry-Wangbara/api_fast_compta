@@ -1,5 +1,4 @@
-// src/pages/api-docs/data/goals.endpoints.ts
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 
 export const goalsEndpoints: Endpoint[] = [
   {
@@ -9,8 +8,9 @@ export const goalsEndpoints: Endpoint[] = [
     body: [
       { name: 'title', type: 'string', required: true, description: "Titre de l'objectif" },
       { name: 'target_amount', type: 'number', required: true, description: 'Montant cible' },
-      { name: 'start_amount', type: 'number', required: false, description: 'Montant de départ (défaut: 0)' },
+      { name: 'start_amount', type: 'number', required: false, description: 'Montant de départ (défaut : 0)' },
       { name: 'deadline', type: 'number', required: false, description: 'Date limite (timestamp)' },
+      { name: 'note', type: 'string', required: false, description: 'Note facultative' },
     ],
     requestExample: { title: 'Épargne vacances', target_amount: 500000, start_amount: 0, deadline: 1735689600000 },
     responseExample: {
@@ -20,9 +20,88 @@ export const goalsEndpoints: Endpoint[] = [
       start_amount: 0,
       target_amount: 500000,
       deadline: 1735689600000,
-      archived: 0,
+      archived: false,
       created_at: 1704240000000,
       updated_at: 1704240000000,
     },
+  },
+  {
+    method: 'GET',
+    path: '/api/goals',
+    description: 'Récupérer la liste des objectifs',
+    query: [
+      { name: 'archived', type: 'boolean', description: 'Filtrer par archivage (true/false)' },
+      { name: 'limit', type: 'number', description: 'Limiter le nombre de résultats' },
+      { name: 'offset', type: 'number', description: 'Décalage pour la pagination' },
+    ],
+    responseExample: [
+      {
+        id: 1,
+        title: 'Épargne vacances',
+        note: null,
+        start_amount: 0,
+        target_amount: 500000,
+        deadline: 1735689600000,
+        archived: false,
+        created_at: 1704240000000,
+        updated_at: 1704240000000,
+      },
+    ],
+  },
+  {
+    method: 'GET',
+    path: '/api/goals/:id',
+    description: 'Récupérer un objectif par son identifiant',
+    params: [
+      { name: 'id', type: 'number', required: true, description: 'Identifiant de l’objectif' },
+    ],
+    responseExample: {
+      id: 1,
+      title: 'Épargne vacances',
+      note: null,
+      start_amount: 0,
+      target_amount: 500000,
+      deadline: 1735689600000,
+      archived: false,
+      created_at: 1704240000000,
+      updated_at: 1704240000000,
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/api/goals/:id',
+    description: 'Mettre à jour un objectif existant',
+    params: [
+      { name: 'id', type: 'number', required: true, description: 'Identifiant de l’objectif' },
+    ],
+    body: [
+      { name: 'title', type: 'string', required: false, description: "Titre de l'objectif" },
+      { name: 'note', type: 'string', required: false, description: 'Note' },
+      { name: 'start_amount', type: 'number', required: false, description: 'Montant de départ' },
+      { name: 'target_amount', type: 'number', required: false, description: 'Montant cible' },
+      { name: 'deadline', type: 'number', required: false, description: 'Date limite (timestamp)' },
+      { name: 'archived', type: 'boolean', required: false, description: 'Archiver ou désarchiver l’objectif' },
+    ],
+    requestExample: { note: 'Objectif mis à jour', archived: true },
+    responseExample: {
+      id: 1,
+      title: 'Épargne vacances',
+      note: 'Objectif mis à jour',
+      start_amount: 0,
+      target_amount: 500000,
+      deadline: 1735689600000,
+      archived: true,
+      created_at: 1704240000000,
+      updated_at: 1704326400000,
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/api/goals/:id',
+    description: 'Supprimer un objectif',
+    params: [
+      { name: 'id', type: 'number', required: true, description: 'Identifiant de l’objectif' },
+    ],
+    responseExample: null,
   },
 ]

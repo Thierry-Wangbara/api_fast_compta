@@ -1,5 +1,4 @@
-// src/pages/api-docs/data/transactions.endpoints.ts
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 
 export const transactionsEndpoints: Endpoint[] = [
   {
@@ -46,5 +45,68 @@ export const transactionsEndpoints: Endpoint[] = [
       created_at: 1704240000000,
       updated_at: 1704240000000,
     },
+  },
+  {
+    method: 'POST',
+    path: '/api/transactions',
+    description: 'Créer une nouvelle transaction',
+    body: [
+      { name: 'accounting_code', type: 'string', required: true, description: 'Code de la comptabilité' },
+      { name: 'kind', type: 'string', required: true, description: 'Type de transaction : "income", "expense" ou "transfer"' },
+      { name: 'amount', type: 'number', required: true, description: 'Montant (≥ 0)' },
+      { name: 'label', type: 'string', required: true, description: 'Intitulé' },
+      { name: 'note', type: 'string', required: false, description: 'Note facultative' },
+      { name: 'category', type: 'string', required: false, description: 'Catégorie' },
+      { name: 'tx_date', type: 'number', required: false, description: 'Date de la transaction (timestamp)' },
+    ],
+    requestExample: { accounting_code: 'MASTER', kind: 'income', amount: 50000, label: 'Salaire', note: 'Salaire du mois' },
+    responseExample: {
+      id: 1,
+      tx_code: 'TX-1704240000000-ABC123XYZ',
+      accounting_code: 'MASTER',
+      kind: 'income',
+      amount: 50000,
+      label: 'Salaire',
+      note: 'Salaire du mois',
+      category: 'Salaire',
+      tx_date: 1704240000000,
+      created_at: 1704240000000,
+      updated_at: 1704240000000,
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/api/transactions/:tx_code',
+    description: 'Mettre à jour une transaction',
+    params: [{ name: 'tx_code', type: 'string', required: true, description: 'Code unique de la transaction' }],
+    body: [
+      { name: 'kind', type: 'string', required: false, description: 'Type : "income", "expense" ou "transfer"' },
+      { name: 'amount', type: 'number', required: false, description: 'Montant (≥ 0)' },
+      { name: 'label', type: 'string', required: false, description: 'Intitulé' },
+      { name: 'note', type: 'string', required: false, description: 'Note' },
+      { name: 'category', type: 'string', required: false, description: 'Catégorie' },
+      { name: 'tx_date', type: 'number', required: false, description: 'Date de la transaction (timestamp)' },
+    ],
+    requestExample: { amount: 55000, note: 'Ajustement', category: 'Bonus' },
+    responseExample: {
+      id: 1,
+      tx_code: 'TX-1704240000000-ABC123XYZ',
+      accounting_code: 'MASTER',
+      kind: 'income',
+      amount: 55000,
+      label: 'Salaire',
+      note: 'Ajustement',
+      category: 'Bonus',
+      tx_date: 1704240000000,
+      created_at: 1704240000000,
+      updated_at: 1704326400000,
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/api/transactions/:tx_code',
+    description: 'Supprimer une transaction',
+    params: [{ name: 'tx_code', type: 'string', required: true, description: 'Code unique de la transaction' }],
+    responseExample: null,
   },
 ]

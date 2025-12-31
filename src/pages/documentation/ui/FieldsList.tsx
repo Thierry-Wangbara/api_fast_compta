@@ -1,6 +1,5 @@
-// src/pages/api-docs/ui/FieldsList.tsx
 import React from 'react'
-import { FieldParam, FieldQuery } from '../types'
+import type { FieldParam, FieldQuery } from '../types.ts'
 
 export default function FieldsList({
   title,

@@ -1,6 +1,5 @@
-// src/pages/api-docs/ui/SectionBlock.tsx
 import React from 'react'
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 import EndpointCard from './EndpointCard'
 
 export default function SectionBlock({

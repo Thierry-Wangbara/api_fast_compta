@@ -1,5 +1,4 @@
-// src/pages/api-docs/data/accountings.endpoints.ts
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 
 export const accountingsEndpoints: Endpoint[] = [
   {
@@ -35,7 +34,9 @@ export const accountingsEndpoints: Endpoint[] = [
     method: 'GET',
     path: '/api/accountings/:code',
     description: 'Récupérer une comptabilité par son code',
-    params: [{ name: 'code', type: 'string', required: true, description: 'Code unique de la comptabilité' }],
+    params: [
+      { name: 'code', type: 'string', required: true, description: 'Code unique de la comptabilité' },
+    ],
     responseExample: {
       id: 1,
       code: 'MASTER',
@@ -53,12 +54,12 @@ export const accountingsEndpoints: Endpoint[] = [
     path: '/api/accountings',
     description: 'Créer une nouvelle comptabilité',
     body: [
-      { name: 'code', type: 'string', required: true, description: 'Code unique (ex: "COMPTA1")' },
+      { name: 'code', type: 'string', required: true, description: 'Code unique (ex : "COMPTA1")' },
       { name: 'name', type: 'string', required: true, description: 'Nom de la comptabilité' },
-      { name: 'type', type: 'string', required: true, description: 'Type: "linked", "standalone" ou "master"' },
+      { name: 'type', type: 'string', required: true, description: 'Type : "linked", "standalone" ou "master"' },
       { name: 'parent_code', type: 'string', required: false, description: 'Code du parent (pour type "linked")' },
-      { name: 'currency', type: 'string', required: false, description: 'Devise (défaut: "XAF")' },
-      { name: 'opening_balance', type: 'number', required: false, description: "Solde d'ouverture (défaut: 0)" },
+      { name: 'currency', type: 'string', required: false, description: 'Devise (défaut : "XAF")' },
+      { name: 'opening_balance', type: 'number', required: false, description: 'Solde d’ouverture (défaut : 0)' },
     ],
     requestExample: {
       code: 'COMPTA1',
@@ -83,13 +84,15 @@ export const accountingsEndpoints: Endpoint[] = [
     method: 'PUT',
     path: '/api/accountings/:code',
     description: 'Mettre à jour une comptabilité',
-    params: [{ name: 'code', type: 'string', required: true, description: 'Code de la comptabilité' }],
+    params: [
+      { name: 'code', type: 'string', required: true, description: 'Code de la comptabilité' },
+    ],
     body: [
       { name: 'name', type: 'string', required: false, description: 'Nom' },
       { name: 'type', type: 'string', required: false, description: 'Type' },
       { name: 'parent_code', type: 'string', required: false, description: 'Code parent' },
       { name: 'currency', type: 'string', required: false, description: 'Devise' },
-      { name: 'opening_balance', type: 'number', required: false, description: "Solde d'ouverture" },
+      { name: 'opening_balance', type: 'number', required: false, description: 'Solde d’ouverture' },
     ],
     requestExample: { name: 'Comptabilité mise à jour', opening_balance: 150000 },
     responseExample: {
@@ -108,7 +111,9 @@ export const accountingsEndpoints: Endpoint[] = [
     method: 'DELETE',
     path: '/api/accountings/:code',
     description: 'Supprimer une comptabilité (sauf MASTER)',
-    params: [{ name: 'code', type: 'string', required: true, description: 'Code de la comptabilité' }],
+    params: [
+      { name: 'code', type: 'string', required: true, description: 'Code de la comptabilité' },
+    ],
     responseExample: null,
   },
 ]

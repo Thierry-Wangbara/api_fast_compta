@@ -1,5 +1,4 @@
-// src/pages/api-docs/data/index.ts
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 import { systemEndpoints } from './system.endpoints'
 import { accountingsEndpoints } from './accountings.endpoints'
 import { transactionsEndpoints } from './transactions.endpoints'

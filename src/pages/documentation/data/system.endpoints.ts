@@ -1,5 +1,4 @@
-// src/pages/api-docs/data/system.endpoints.ts
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 
 export const systemEndpoints: Endpoint[] = [
   {

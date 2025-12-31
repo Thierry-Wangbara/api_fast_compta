@@ -1,6 +1,5 @@
-// src/pages/api-docs/ui/EndpointCard.tsx
 import React from 'react'
-import { Endpoint } from '../types'
+import type { Endpoint } from '../types.ts'
 import MethodBadge from './MethodBadge'
 import JsonTabs from './JsonTabs'
 import FieldsList from './FieldsList'
