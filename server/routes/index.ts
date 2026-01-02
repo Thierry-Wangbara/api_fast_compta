@@ -13,6 +13,7 @@ import * as savingsController from '../controllers/savings.controller.js'
 import * as savingMovesController from '../controllers/saving-moves.controller.js'
 import * as autoSavesController from '../controllers/auto-saves.controller.js'
 import * as financeEventsController from '../controllers/finance-events.controller.js'
+import * as syncController from '../controllers/sync.controller.js'
 
 const router = Router()
 
@@ -103,6 +104,10 @@ router.get('/finance-events/:id', financeEventsController.getFinanceEvent)
 router.post('/finance-events', financeEventsController.createFinanceEvent)
 router.put('/finance-events/:id', financeEventsController.updateFinanceEvent)
 router.delete('/finance-events/:id', financeEventsController.deleteFinanceEvent)
+
+// Synchronisation
+router.get('/sync', syncController.sync)
+router.post('/sync', syncController.pushSync)
 
 export default router
 

@@ -1,5 +1,3 @@
-import React from 'react'
-import type { FieldParam, FieldQuery } from '../types.ts'
 
 export default function FieldsList({
   title,
@@ -43,7 +41,7 @@ export default function FieldsList({
               {it.type}
             </span>
 
-            {!isQuery && it.required && (
+            {((!isQuery && it.required) || (isQuery && it.description?.includes('REQUIS'))) && (
               <span
                 style={{
                   padding: '0.125rem 0.5rem',

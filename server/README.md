@@ -23,6 +23,9 @@ La base de données SQLite est créée automatiquement dans `data/compta.db` ave
 
 ## Endpoints API
 
+### Health Check
+- `GET /api/health` - Vérifier l'état de l'API
+
 ### UID
 - `POST /api/uid` - Générer un UID unique pour identifier un utilisateur
 
@@ -51,6 +54,20 @@ npm run dev:server
 
 Le serveur démarre sur `http://localhost:3001`
 
+### Vérifier que le serveur fonctionne
+
+```bash
+curl http://localhost:3001/api/health
+```
+
+Réponse:
+```json
+{
+  "status": "ok",
+  "message": "API Fast Compta is running"
+}
+```
+
 ### Générer un UID
 
 ```bash
@@ -77,4 +94,5 @@ X-User-Id: 550e8400-e29b-41d4-a716-446655440000
 - Utilisation d'un UID unique pour distinguer les utilisateurs
 - Les timestamps sont en millisecondes depuis epoch (comme dans l'app mobile)
 - Les montants sont en entiers (centimes pour XAF)
+
 

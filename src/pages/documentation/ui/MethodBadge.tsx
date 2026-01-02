@@ -1,5 +1,4 @@
 // src/pages/api-docs/ui/MethodBadge.tsx
-import React from 'react'
 
 export function getMethodColor(method: string) {
   switch (method) {

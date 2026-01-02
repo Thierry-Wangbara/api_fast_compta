@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Endpoint } from '../types.ts'
 import MethodBadge from './MethodBadge'
 import JsonTabs from './JsonTabs'

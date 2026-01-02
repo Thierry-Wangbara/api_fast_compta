@@ -21,4 +21,5 @@ export interface Endpoint {
   query?: FieldQuery[]
   requestExample?: any
   responseExample?: any
+  errorExample?: any
 }
