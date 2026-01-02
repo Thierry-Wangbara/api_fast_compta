@@ -77,7 +77,18 @@ api/
 server/
   └── ...               # Code de l'API Express
 vercel.json             # Configuration Vercel
+package.json            # Contient "engines": { "node": "20.x" }
 ```
+
+## ⚙️ Configuration
+
+### vercel.json
+- **Simplifié** : Vercel détecte automatiquement les fonctions dans `api/`
+- **Framework** : Vite pour le frontend
+- **Rewrites** : Routes `/api/*` vers la fonction serverless
+
+### package.json
+- **engines** : Spécifie Node.js 20.x (Vercel utilise cette version automatiquement)
 
 ## 🔧 Configuration
 
