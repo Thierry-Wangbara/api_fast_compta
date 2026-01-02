@@ -1,0 +1,9 @@
+# Fichiers à ignorer lors du déploiement Vercel
+node_modules
+.git
+.env.local
+.env.*.local
+.DS_Store
+*.log
+data/compta.db
+data/*.db

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 export default function ServerInfo() {
   const [frontendUrl, setFrontendUrl] = useState('http://localhost:5173')
-  const backendUrl = 'http://localhost:3001'
+  const [backendUrl, setBackendUrl] = useState('http://localhost:3001')
   const [copied, setCopied] = useState<string | null>(null)
 
   useEffect(() => {
@@ -10,6 +10,16 @@ export default function ServerInfo() {
     if (typeof window !== 'undefined') {
       const currentUrl = window.location.origin
       setFrontendUrl(currentUrl)
+      
+      // Sur Vercel ou en production, l'API est sur le même domaine avec /api
+      // En développement local, utiliser le port 3001
+      if (currentUrl.includes('vercel.app') || currentUrl.includes('localhost:5173') || currentUrl.includes('localhost:3000')) {
+        // En production Vercel, l'API est sur le même domaine
+        setBackendUrl(currentUrl + '/api')
+      } else {
+        // En développement, utiliser le serveur séparé
+        setBackendUrl('http://localhost:3001/api')
+      }
     }
   }, [])
 
