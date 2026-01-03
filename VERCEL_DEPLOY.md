@@ -2,12 +2,15 @@
 
 Ce guide explique comment déployer votre application Fast Compta (frontend + API) sur Vercel.
 
-## ⚠️ Important : Limitations SQLite sur Vercel
+## ⚠️ Important : SQLite ne fonctionne PAS sur Vercel
 
-**SQLite avec `better-sqlite3` ne fonctionne PAS bien sur Vercel** car :
+**SQLite avec `better-sqlite3` ne fonctionne PAS sur Vercel** car :
 - Les fonctions serverless sont éphémères (pas de système de fichiers persistant)
 - `better-sqlite3` nécessite des binaires natifs qui peuvent ne pas être compatibles
 - Chaque invocation de fonction est isolée
+- Même avec `/tmp`, les données sont perdues entre les invocations
+
+**➡️ Solution obligatoire : Migrez vers PostgreSQL** (voir [MIGRATION_POSTGRES.md](./MIGRATION_POSTGRES.md))
 
 ### Solutions alternatives :
 
