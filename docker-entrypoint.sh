@@ -18,3 +18,4 @@ node server/index.js &
 # Attendre que les processus soient terminés
 wait
 
+

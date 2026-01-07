@@ -5,11 +5,12 @@ export const getSettings = (req: Request, res: Response) => {
   try {
     const settings = db
       .prepare(`SELECT * FROM ${DbSchema.tAppSettings}`)
-      .all()
+      .all() as any[]
     
     const settingsObj: Record<string, string> = {}
     for (const setting of settings) {
-      settingsObj[setting.key] = setting.value
+      const s = setting as any
+      settingsObj[s.key] = s.value
     }
     
     res.json(settingsObj)
@@ -23,13 +24,14 @@ export const getSetting = (req: Request, res: Response) => {
   try {
     const setting = db
       .prepare(`SELECT * FROM ${DbSchema.tAppSettings} WHERE key = ?`)
-      .get(req.params.key)
+      .get(req.params.key) as any
     
     if (!setting) {
       return res.status(404).json({ error: 'Paramètre non trouvé' })
     }
     
-    res.json({ key: setting.key, value: setting.value })
+    const s = setting as any
+    res.json({ key: s.key, value: s.value })
   } catch (error) {
     console.error('Error fetching setting:', error)
     res.status(500).json({ error: 'Erreur lors de la récupération du paramètre' })
@@ -53,7 +55,7 @@ export const createSetting = (req: Request, res: Response) => {
       
       const setting = db
         .prepare(`SELECT * FROM ${DbSchema.tAppSettings} WHERE key = ?`)
-        .get(key)
+        .get(key) as any
       
       res.status(201).json(setting)
     } catch (error: any) {
@@ -86,7 +88,7 @@ export const updateSetting = (req: Request, res: Response) => {
     
     const setting = db
       .prepare(`SELECT * FROM ${DbSchema.tAppSettings} WHERE key = ?`)
-      .get(req.params.key)
+      .get(req.params.key) as any
     
     res.json(setting)
   } catch (error) {
