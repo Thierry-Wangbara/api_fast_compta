@@ -82,7 +82,7 @@ export const updateAccounting = (req: Request, res: Response) => {
     
     const existing = db
       .prepare(`SELECT * FROM ${DbSchema.tAccountings} WHERE code = ?`)
-      .get(code)
+      .get(code) as any
     
     if (!existing) {
       return res.status(404).json({ error: 'Comptabilité non trouvée' })

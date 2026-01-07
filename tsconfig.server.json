@@ -14,8 +14,7 @@
     "rootDir": "./server",
     "noEmit": false,
     "declaration": false,
-    "sourceMap": false,
-    "verbatimModuleSyntax": true
+    "sourceMap": false
   },
   "include": ["server/**/*.ts"],
   "exclude": ["node_modules", "dist"]
