@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Endpoint } from '../types.ts'
 import MethodBadge from './MethodBadge'
 import JsonTabs from './JsonTabs'
@@ -71,6 +70,7 @@ export default function EndpointCard({
             endpointKey={endpointKey}
             requestExample={endpoint.requestExample}
             responseExample={endpoint.responseExample}
+            errorExample={endpoint.errorExample}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />

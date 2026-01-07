@@ -1,5 +1,3 @@
-import React from 'react'
-import type { FieldParam, FieldQuery } from '../types.ts'
 
 export default function FieldsList({
   title,
