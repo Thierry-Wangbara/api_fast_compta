@@ -43,6 +43,8 @@ export function createSchema(db: any) {
     ON ${DbSchema.tAccountings}(parent_code);
   `)
 
+  db.exec(`ALTER TABLE ${DbSchema.tAccountings} ADD COLUMN deleted_at INTEGER;`);
+
   // Insérer le compte maître s'il n'existe pas
   const masterExists = db.prepare(`SELECT COUNT(*) as count FROM ${DbSchema.tAccountings} WHERE code = 'MASTER'`).get()
   if (masterExists.count === 0) {
