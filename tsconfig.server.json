@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist/server",
+    "rootDir": "./server",
+    "noEmit": false,
+    "declaration": false,
+    "sourceMap": false,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["server/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+

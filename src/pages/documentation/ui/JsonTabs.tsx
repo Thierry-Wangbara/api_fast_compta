@@ -1,25 +1,24 @@
 // src/pages/api-docs/ui/JsonTabs.tsx
+import React from 'react'
 
 export default function JsonTabs({
   endpointKey,
   requestExample,
   responseExample,
-  errorExample,
   activeTab,
   setActiveTab,
 }: {
   endpointKey: string
   requestExample?: any
   responseExample?: any
-  errorExample?: any
   activeTab: Record<string, string>
   setActiveTab: (v: Record<string, string>) => void
 }) {
-  if (!requestExample && !responseExample && !errorExample) return null
+  if (!requestExample && !responseExample) return null
 
-  const tab = activeTab[endpointKey] || (requestExample ? 'request' : responseExample ? 'response' : 'error')
+  const tab = activeTab[endpointKey] || (requestExample ? 'request' : 'response')
 
-  const Button = ({ id, label }: { id: 'request' | 'response' | 'error'; label: string }) => (
+  const Button = ({ id, label }: { id: 'request' | 'response'; label: string }) => (
     <button
       onClick={() => setActiveTab({ ...activeTab, [endpointKey]: id })}
       style={{
@@ -38,22 +37,18 @@ export default function JsonTabs({
     </button>
   )
 
-  let json
-  if (tab === 'request') json = requestExample
-  else if (tab === 'response') json = responseExample
-  else json = errorExample
+  const json = tab === 'request' ? requestExample : responseExample
 
   return (
     <div style={{ marginBottom: '1.5rem' }}>
       <div style={{ display: 'flex', borderBottom: '2px solid #e2e8f0', marginBottom: '1rem' }}>
         {requestExample && <Button id="request" label="Requête" />}
         {responseExample && <Button id="response" label="Réponse" />}
-        {errorExample && <Button id="error" label="Erreur" />}
       </div>
 
-      <div style={{ background: tab === 'error' ? '#2d1b1b' : '#1e1e1e', borderRadius: '8px', padding: '1.25rem', overflow: 'auto' }}>
-        <pre style={{ margin: 0, color: tab === 'error' ? '#fca5a5' : '#d4d4d4', fontSize: '0.875rem', lineHeight: '1.6', textAlign: 'left', fontFamily: '"Fira Code", "Consolas", "Monaco", monospace' }}>
-          <code style={{ display: 'block', textAlign: 'left' }}>{JSON.stringify(json, null, 2)}</code>
+      <div style={{ background: '#1e1e1e', borderRadius: '8px', padding: '1.25rem', overflow: 'auto' }}>
+        <pre style={{ margin: 0, color: '#d4d4d4', fontSize: '0.875rem', lineHeight: '1.6' }}>
+          <code>{JSON.stringify(json, null, 2)}</code>
         </pre>
       </div>
     </div>

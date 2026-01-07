@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Endpoint } from '../types.ts'
 import EndpointCard from './EndpointCard'
 

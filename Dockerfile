@@ -38,8 +38,8 @@ RUN npm ci
 COPY server/ ./server/
 COPY tsconfig*.json ./
 
-# Compiler TypeScript
-RUN npx tsc -p tsconfig.node.json --outDir ./dist/server
+# Compiler TypeScript du serveur
+RUN npx tsc -p tsconfig.server.json
 
 # ============================================
 # Stage 3: Runtime
