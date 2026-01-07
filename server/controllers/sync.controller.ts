@@ -59,6 +59,16 @@ function emptyResult(): SyncResult {
   }
 }
 
+function tableColumns(table: string): Set<string> {
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all() as AnyRow[]
+  return new Set(cols.map((c) => String(c.name)))
+}
+
+function hasCol(cols: Set<string>, name: string) {
+  return cols.has(name)
+}
+
+
 /**
  * Construit le delta d'une table avec soft delete.
  * - created: created_at >= since && (deleted_at IS NULL)
@@ -73,39 +83,73 @@ function buildTableDelta(params: {
   const { table, idCol, since } = params
   const delta: EntityDelta = { created: [], updated: [], deleted: [] }
 
-  // On récupère tout ce qui a bougé depuis since (create/update/delete)
+  const cols = tableColumns(table)
+
+  const hasCreatedAt = hasCol(cols, 'created_at')
+  const hasUpdatedAt = hasCol(cols, 'updated_at')
+  const hasDeletedAt = hasCol(cols, 'deleted_at')
+
+  // Sécurité minimale
+  if (!hasCreatedAt && !hasUpdatedAt && !hasDeletedAt) {
+    // table non syncable dans cet état
+    return delta
+  }
+
+  // WHERE dynamique
+  const whereParts: string[] = []
+  const args: any[] = []
+
+  if (hasCreatedAt) {
+    whereParts.push('created_at >= ?')
+    args.push(since)
+  }
+
+  if (hasUpdatedAt) {
+    whereParts.push('updated_at >= ?')
+    args.push(since)
+  }
+
+  if (hasDeletedAt) {
+    whereParts.push('(deleted_at IS NOT NULL AND deleted_at >= ?)')
+    args.push(since)
+  }
+
+  const where = whereParts.length ? whereParts.join(' OR ') : '1=0'
+
   const rows = db
-    .prepare(
-      `
-      SELECT *
-      FROM ${table}
-      WHERE
-        created_at >= ?
-        OR updated_at >= ?
-        OR (deleted_at IS NOT NULL AND deleted_at >= ?)
-      `
-    )
-    .all(since, since, since) as AnyRow[]
+    .prepare(`SELECT * FROM ${table} WHERE ${where}`)
+    .all(...args) as AnyRow[]
 
   for (const r of rows) {
-    const deletedAt = r.deleted_at as number | null
+    const deletedAt = hasDeletedAt ? (r.deleted_at as number | null) : null
+    const createdAt = hasCreatedAt ? Number(r.created_at ?? 0) : 0
+    const updatedAt = hasUpdatedAt ? Number(r.updated_at ?? 0) : 0
 
-    // 1) Deleted d'abord
-    if (deletedAt != null && deletedAt >= since) {
+    // 1) Deleted
+    if (hasDeletedAt && deletedAt != null && deletedAt >= since) {
       delta.deleted.push({ id: r[idCol], deleted_at: deletedAt })
       continue
     }
 
-    // 2) Exclure les lignes soft-deleted (sécurité)
-    if (deletedAt != null) continue
+    // 2) Exclure soft-deleted
+    if (hasDeletedAt && deletedAt != null) continue
 
     // 3) Created vs Updated
-    if ((r.created_at as number) >= since) delta.created.push(r)
-    else if ((r.updated_at as number) >= since) delta.updated.push(r)
+    if (hasCreatedAt && createdAt >= since) {
+      delta.created.push(r)
+      continue
+    }
+
+    // Si pas created_at mais updated_at existe: tout est "updated"
+    if (hasUpdatedAt && updatedAt >= since) {
+      delta.updated.push(r)
+      continue
+    }
   }
 
   return delta
 }
+
 
 function buildSyncResult(since: number): SyncResult {
   const r = emptyResult()
@@ -213,10 +257,12 @@ export const sync = (req: Request, res: Response) => {
       data,
       summary: summarize(data),
     })
-  } catch (error) {
-    console.error('Error syncing:', error)
+  } catch (error: any) {
+    console.error('Error syncing:', error?.message ?? error)
+    console.error(error)
     return res.status(500).json({ error: 'Erreur lors de la synchronisation' })
   }
+  
 }
 
 /* =========================================================
